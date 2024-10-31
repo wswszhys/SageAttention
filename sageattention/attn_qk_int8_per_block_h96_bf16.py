@@ -87,7 +87,7 @@ def forward(q, k, v, q_scale, k_scale):
     HEAD_DIM_Q, HEAD_DIM_K = q.shape[-1], k.shape[-1]
     HEAD_DIM_V = v.shape[-1]
     assert HEAD_DIM_Q == HEAD_DIM_K and HEAD_DIM_K == HEAD_DIM_V
-    o = torch.empty_like(q, dtype=torch.bfloat16)
+    o = torch.empty_like(q, dtype=torch.float16)
     stage = 1
 
     grid = (triton.cdiv(q.shape[2], BLOCK_M), q.shape[0] * q.shape[1], 1)

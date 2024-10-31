@@ -28,7 +28,7 @@ def sageattn(q, k, v, attn_mask=None, dropout_p=0.0, is_causal=False, scale=None
     if dtype == torch.float32 or dtype == torch.float16:
         q, k, v = q.contiguous().to(torch.float16), k.contiguous().to(torch.float16), v.contiguous().to(torch.float16)
     else:
-        q, k, v = q.contiguous().to(torch.bfloat16), k.contiguous().to(torch.bfloat16), v.contiguous().to(torch.bfloat16)
+        q, k, v = q.contiguous().to(torch.float16), k.contiguous().to(torch.float16), v.contiguous().to(torch.float16)
 
     if smooth_k:
         k -= k.mean(dim=-2, keepdim=True)
@@ -65,7 +65,7 @@ def sageattn(q, k, v, attn_mask=None, dropout_p=0.0, is_causal=False, scale=None
                 o = attn_h128_true(q_int8, k_int8, v, q_scale, k_scale)
 
 
-    elif dtype == torch.bfloat16:
+    elif dtype == torch.float16:
 
         if headdim==96:
             q_int8, q_scale, k_int8, k_scale = per_block_int8_hd96(q, k)
